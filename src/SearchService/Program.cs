@@ -1,7 +1,6 @@
 using System.Net;
 using MassTransit;
-using MongoDB.Driver;
-using MongoDB.Entities;using Polly;
+using Polly;
 using Polly.Extensions.Http;
 using SearchService.Consumers;
 using SearchService.Data;
@@ -24,7 +23,7 @@ builder.Services.AddMassTransit(x =>
         cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
         {
             host.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
-            host.Username(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+            host.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
 
         });
         cfg.ReceiveEndpoint("search-auction-created", e =>
@@ -50,7 +49,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
 {
     try
     {
-        await DBInitializer.InitDb(app);
+        await DbInitializer.InitDb(app);
 
     }
     catch (Exception e)

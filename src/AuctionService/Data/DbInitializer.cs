@@ -17,6 +17,7 @@ public class DbInitializer
 
         if(context.Auctions.Any()){
             Console.WriteLine("Already have data");
+            return;
         }
 
         var auctions = new List<Auction>(){
