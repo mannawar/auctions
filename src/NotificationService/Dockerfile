@@ -18,12 +18,13 @@ COPY tests/AuctionService.UnitTests/AuctionService.UnitTests.csproj tests/Auctio
 RUN dotnet restore main.sln
 
 #Copy the app folders
-COPY src/GatewayService src/GatewayService
-WORKDIR /app/src/GatewayService
+COPY src/NotificationService src/NotificationService
+COPY src/Contracts src/Contracts
+WORKDIR /app/src/NotificationService
 RUN dotnet publish -c Release -o /app/src/out
 
 #Build Runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build /app/src/out .
-ENTRYPOINT [ "dotnet", "GatewayService.dll" ]
+ENTRYPOINT [ "dotnet", "NotificationService.dll" ]
